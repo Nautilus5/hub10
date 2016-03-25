@@ -1,6 +1,6 @@
 ﻿namespace BoggleClient
 {
-    partial class Form1
+    partial class GameScreen
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameScreen));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -64,14 +65,15 @@
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.startButton = new System.Windows.Forms.Button();
+            this.gameLengthTextBox = new System.Windows.Forms.TextBox();
+            this.PlayerNameTextBox = new System.Windows.Forms.TextBox();
+            this.serverNameTextBox = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -122,6 +124,7 @@
             this.label16.TabIndex = 15;
             this.label16.Text = "\r\n";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label16.Click += new System.EventHandler(this.label16_Click);
             // 
             // label15
             // 
@@ -283,6 +286,7 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button1
             // 
@@ -301,6 +305,7 @@
             this.wordinput.Name = "wordinput";
             this.wordinput.Size = new System.Drawing.Size(235, 20);
             this.wordinput.TabIndex = 2;
+            this.wordinput.TextChanged += new System.EventHandler(this.wordinput_TextChanged);
             // 
             // label17
             // 
@@ -440,11 +445,11 @@
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox2.Controls.Add(this.label25);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Controls.Add(this.textBox3);
-            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.cancelButton);
+            this.groupBox2.Controls.Add(this.startButton);
+            this.groupBox2.Controls.Add(this.gameLengthTextBox);
+            this.groupBox2.Controls.Add(this.PlayerNameTextBox);
+            this.groupBox2.Controls.Add(this.serverNameTextBox);
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Controls.Add(this.label20);
@@ -467,51 +472,51 @@
     "me duration input is not a number.\r\n\r\nGame will not start if server domain name " +
     "is invalid.";
             // 
-            // button5
+            // cancelButton
             // 
-            this.button5.Location = new System.Drawing.Point(12, 336);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Cancel";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.cancelButton.Location = new System.Drawing.Point(12, 336);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 7;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button4
+            // startButton
             // 
-            this.button4.Location = new System.Drawing.Point(426, 336);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Start!";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.startButton.Location = new System.Drawing.Point(426, 336);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(75, 23);
+            this.startButton.TabIndex = 6;
+            this.startButton.Text = "Start!";
+            this.startButton.UseVisualStyleBackColor = true;
+            this.startButton.Click += new System.EventHandler(this.button4_Click);
             // 
-            // textBox4
+            // gameLengthTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(124, 142);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(136, 20);
-            this.textBox4.TabIndex = 5;
-            this.textBox4.Text = "180";
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
+            this.gameLengthTextBox.Location = new System.Drawing.Point(124, 142);
+            this.gameLengthTextBox.Name = "gameLengthTextBox";
+            this.gameLengthTextBox.Size = new System.Drawing.Size(136, 20);
+            this.gameLengthTextBox.TabIndex = 5;
+            this.gameLengthTextBox.Text = "180";
+            this.gameLengthTextBox.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
-            // textBox3
+            // PlayerNameTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(88, 91);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(170, 20);
-            this.textBox3.TabIndex = 4;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.PlayerNameTextBox.Location = new System.Drawing.Point(88, 91);
+            this.PlayerNameTextBox.Name = "PlayerNameTextBox";
+            this.PlayerNameTextBox.Size = new System.Drawing.Size(170, 20);
+            this.PlayerNameTextBox.TabIndex = 4;
+            this.PlayerNameTextBox.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
-            // textBox2
+            // serverNameTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(124, 38);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(377, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "http://bogglecs3500s16.azurewebsites.net";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.serverNameTextBox.Location = new System.Drawing.Point(124, 38);
+            this.serverNameTextBox.Name = "serverNameTextBox";
+            this.serverNameTextBox.Size = new System.Drawing.Size(377, 20);
+            this.serverNameTextBox.TabIndex = 3;
+            this.serverNameTextBox.Text = "http://bogglecs3500s16.azurewebsites.net";
+            this.serverNameTextBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label24
             // 
@@ -541,7 +546,7 @@
             this.label20.TabIndex = 0;
             this.label20.Text = "server domain name:";
             // 
-            // Form1
+            // GameScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -564,7 +569,7 @@
             this.Controls.Add(this.wordinput);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "Form1";
+            this.Name = "GameScreen";
             this.Text = "Boggle!";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -615,12 +620,13 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox gameLengthTextBox;
+        private System.Windows.Forms.TextBox PlayerNameTextBox;
+        private System.Windows.Forms.TextBox serverNameTextBox;
+        private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
