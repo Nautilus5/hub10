@@ -1,9 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using System.ServiceModel.Web;
+using System.Text;
 using static System.Net.HttpStatusCode;
+using DataModel;
 
 namespace Boggle
 {
@@ -30,6 +36,16 @@ namespace Boggle
             return File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + "index.html");
         }
 
+        public string Cancel(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string gameStatus(string brief)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Demo.  You can delete this.
         /// </summary>
@@ -37,6 +53,11 @@ namespace Boggle
         {
             SetStatus(OK);
             return list[0];
+        }
+
+        public string joinGame(string Token, string time)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -62,5 +83,39 @@ namespace Boggle
                 return list;
             }
         }
+
+        public string playWord(string token, string word)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserData Register(string nickname)
+        {
+            if (nickname == null || nickname == "")
+            {
+                SetStatus(Forbidden);
+                return null;
+            }
+
+            String userID = Guid.NewGuid().ToString();
+
+            UserData data = new UserData();
+            Player p1 = new Player();
+
+            p1.Nickname = nickname;
+
+            data.UserToken = userID;
+
+            SetStatus(Created);
+            return data;
+
+
+
+        }
+
+        //String IBoggleService.Register(string nickname)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
