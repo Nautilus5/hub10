@@ -12,18 +12,25 @@ using System.ServiceModel.Web;
 using System.Text;
 using static System.Net.HttpStatusCode;
 using DataModel;
+using System.Timers;
 
 namespace Boggle
 {
     public class BoggleService : IBoggleService
     {
-        static BoggleData GameObject;
+        static BoggleData GameObject = new BoggleData();
         private int tempGameID = 0;
         Dictionary<Player, BoggleData> playersToGame = new Dictionary<Player, BoggleData>();
         Player players;
-
         ActivePlayer p1holder;
         ActivePlayer p2holder;
+        int timeLeft = -1;
+        Timer timer = new Timer(1000);
+        private void TimerEventProcessor(object sender, EventArgs e)
+        {
+            timeLeft--;
+
+        }
         /// <summary>
         /// The most recent call to SetStatus determines the response code used when
         /// an http response is sent.
@@ -96,19 +103,21 @@ namespace Boggle
             }
             else if((GameObject.GameState == "active" || GameObject.GameState == "completed")&& brief == "yes")
             {
+                SetStatus(OK);
                 PlayerBriefReport Player1 = new PlayerBriefReport();
                 Player1.Score = p1holder.totalScore;
                 PlayerBriefReport Player2 = new PlayerBriefReport();
                 Player2.Score = p2holder.totalScore;
                 dynamic gameStat = new ExpandoObject();
                 gameStat.GameState = GameObject.GameState;
-                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.TimeLeft = timeLeft;//need timeleft counter
                 gameStat.Player1 = Player1;
                 gameStat.Player2 = Player2;
                 return gameStat;
             }
             else if (GameObject.GameState == "active" && brief != "yes")
             {
+                SetStatus(OK);
                 PlayerReport Player1 = new PlayerReport();
                 Player1.Nickname = players.p1_Nickname;
                 Player1.Score = p1holder.totalScore;
@@ -121,7 +130,7 @@ namespace Boggle
                 gameStat.GameState = GameObject.GameState;
                 gameStat.Board = GameObject.Board;
                 gameStat.TimeLimit = GameObject.TimeLimit;
-                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.TimeLeft = timeLeft;//need timeleft counter
                 gameStat.Player1 = Player1;
                 gameStat.Player2 = Player2;
                 
@@ -129,32 +138,34 @@ namespace Boggle
             }
             else if (GameObject.GameState == "completed" && brief != "yes")
             {
+                SetStatus(OK);
                 GCompletePlayerReport Player1 = new GCompletePlayerReport();
                 Player1.Nickname = players.p1_Nickname;
                 Player1.Score = p1holder.totalScore;
-                Player1.WordsPlayed = players.p1.WordsPlayed;//need words played list from player
+                Player1.WordsPlayed = p1holder.List;//need words played list from player
                 GCompletePlayerReport Player2 = new GCompletePlayerReport();
                 Player2.Nickname = players.p2_Nickname;
                 Player2.Score = p2holder.totalScore;
-                Player2.WordsPlayed = players.p2.WordsPlayed;//need words played list from player
+                Player2.WordsPlayed = p2holder.List;//need words played list from player
                 dynamic gameStat = new ExpandoObject();
 
                 gameStat.GameState = GameObject.GameState;
                 gameStat.Board = GameObject.Board;
                 gameStat.TimeLimit = GameObject.TimeLimit;
-                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.TimeLeft = timeLeft;//need timeleft counter
                 gameStat.Player1 = Player1;
                 gameStat.Player2 = Player2;
 
                 return gameStat;
             }
+            SetStatus(Forbidden);
             return null;
 
         }
 
-        public string joinGame(string UserToken, int TimeLimit)
+        public string joinGame(string UserToken, int time)
         {
-            if (UserToken == null || TimeLimit < 5 || TimeLimit > 120)
+            if (UserToken == null || time < 5 || time > 120)
             {
                 SetStatus(Forbidden);
                 return null;
@@ -172,9 +183,11 @@ namespace Boggle
                 SetStatus(Accepted);
                 tempGameID++;
                 return tempGameID.ToString();
+                GameObject.TimeLimit = time;
             }
             if (UserToken == players.p2_ID)
             {
+                GameObject.TimeLimit = (GameObject.TimeLimit+time) /2;
                 GameObject.GameState = "active";
                 SetStatus(Created);
 
@@ -194,18 +207,10 @@ namespace Boggle
                 p1holder = player1;
                 p2holder = player2;
 
-
+                timeLeft = GameObject.TimeLimit;
 
                 return tempGameID.ToString();
             }
-            //if(UserToken == "affjda")//second player
-            //{
-
-            //   BoggleData data1 = new BoggleData();
-            //    Player p2 = new Player();
-            //    SetStatus(Accepted);
-            //    return data1.GameID;
-            //}
 
             string GameID = Guid.NewGuid().ToString();
 

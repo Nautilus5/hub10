@@ -76,9 +76,6 @@ namespace DataModel
         [DataMember(EmitDefaultValue = false)]
         public int TimeLimit { get; set; }
 
-        //[DataMember(EmitDefaultValue = false)]
-        //public int timeleft { get; set; }
-
         [DataMember(EmitDefaultValue = false)]
         public string Word { get; set; }
         [DataMember(EmitDefaultValue = false)]
@@ -99,7 +96,5 @@ namespace DataModel
         public String p2_Nickname { get; set; }
         [DataMember]
         public String p2_ID { get; set; }
-
-        //Public List wordsPlayed { get; set; }
     }
 }
