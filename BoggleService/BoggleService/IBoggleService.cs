@@ -16,32 +16,30 @@ namespace Boggle
     {
         [WebGet(UriTemplate = "/api")]
         Stream API();
-
         [WebInvoke(Method = "POST", UriTemplate = "/users")]
-        UserData Register(string nickname);
+        String Register(string nickname);
 
-
-        //[WebInvoke(Method = "POST", UriTemplate = "/games")]
-        //String joinGame(String Token, String time);
-
+        // [WebInvoke(Method = "POST", UriTemplate = "/users")]
+        // UserData timeleft(int time);
+        [WebInvoke(Method = "POST", UriTemplate = "/games")]
+        String joinGame(String Token, int time);
         [WebInvoke(Method = "PUT", UriTemplate = "/games")]
         String Cancel(String token);
 
-        //[WebInvoke(Method = "PUT", UriTemplate = "/games/:GameID")]
-        //String playWord(String token, string word);
-
-        //[WebInvoke(Method = "GET", UriTemplate = "/games")]
-        //String gameStatus(String brief);
+        [WebInvoke(Method = "PUT", UriTemplate = "/games:GameID")]
+        String playWord(String token, string word);
 
 
-        /*
-        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "/games")]
+        String gameStatus();// String brief);
+
+
+
         string GetData(int value);
 
         
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
-        */
+        //[OperationContract]
+        //CompositeType GetDataUsingDataContract(CompositeType composite);
 
 
         // TODO: Add your service operations here
@@ -71,3 +69,4 @@ namespace Boggle
     }
     */
 }
+
