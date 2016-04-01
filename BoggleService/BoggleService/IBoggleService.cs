@@ -1,4 +1,6 @@
-﻿using DataModel;
+﻿//Rizwan Mohammad and Adam Bennion, 2016
+
+using DataModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
