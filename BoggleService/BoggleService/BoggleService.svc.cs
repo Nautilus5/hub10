@@ -71,10 +71,85 @@ namespace Boggle
 
             }
         }
+        /// <summary>
+        /// If GameID is invalid, responds with status 403 (Forbidden).
+        /// Otherwise, returns information about the game named by GameID as illustrated below. 
+        /// Note that the information returned depends on whether "Brief=yes" was included as a 
+        /// parameter as well as on the state of the game. Responds with status code 200 (OK). 
+        /// Note: The Board and Words are not case sensitive. 
+        /// </summary>
+        /// <returns></returns>
 
-        public string gameStatus()// string brief)
+        public ExpandoObject gameStatus(string brief)
         {
-            throw new NotImplementedException();
+            if(p1holder.GameID != tempGameID.ToString() || p2holder.GameID != tempGameID.ToString())
+            {
+                SetStatus(Forbidden);
+                return null;
+            }
+            else if(GameObject.GameState == "pending")
+            {
+                SetStatus(OK);
+                dynamic gameStat = new ExpandoObject();
+                gameStat.GameState = "pending";
+                return gameStat;
+            }
+            else if((GameObject.GameState == "active" || GameObject.GameState == "completed")&& brief == "yes")
+            {
+                PlayerBriefReport Player1 = new PlayerBriefReport();
+                Player1.Score = p1holder.totalScore;
+                PlayerBriefReport Player2 = new PlayerBriefReport();
+                Player2.Score = p2holder.totalScore;
+                dynamic gameStat = new ExpandoObject();
+                gameStat.GameState = GameObject.GameState;
+                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.Player1 = Player1;
+                gameStat.Player2 = Player2;
+                return gameStat;
+            }
+            else if (GameObject.GameState == "active" && brief != "yes")
+            {
+                PlayerReport Player1 = new PlayerReport();
+                Player1.Nickname = players.p1_Nickname;
+                Player1.Score = p1holder.totalScore;
+                PlayerReport Player2 = new PlayerReport();
+                Player2.Nickname = players.p2_Nickname;
+                Player2.Score = p2holder.totalScore;
+
+                dynamic gameStat = new ExpandoObject();
+
+                gameStat.GameState = GameObject.GameState;
+                gameStat.Board = GameObject.Board;
+                gameStat.TimeLimit = GameObject.TimeLimit;
+                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.Player1 = Player1;
+                gameStat.Player2 = Player2;
+                
+                return gameStat;
+            }
+            else if (GameObject.GameState == "completed" && brief != "yes")
+            {
+                GCompletePlayerReport Player1 = new GCompletePlayerReport();
+                Player1.Nickname = players.p1_Nickname;
+                Player1.Score = p1holder.totalScore;
+                Player1.WordsPlayed = players.p1.WordsPlayed;//need words played list from player
+                GCompletePlayerReport Player2 = new GCompletePlayerReport();
+                Player2.Nickname = players.p2_Nickname;
+                Player2.Score = p2holder.totalScore;
+                Player2.WordsPlayed = players.p2.WordsPlayed;//need words played list from player
+                dynamic gameStat = new ExpandoObject();
+
+                gameStat.GameState = GameObject.GameState;
+                gameStat.Board = GameObject.Board;
+                gameStat.TimeLimit = GameObject.TimeLimit;
+                gameStat.TimeLeft = GameObject.timeLeft;//need timeleft counter
+                gameStat.Player1 = Player1;
+                gameStat.Player2 = Player2;
+
+                return gameStat;
+            }
+            return null;
+
         }
 
         public string joinGame(string UserToken, int TimeLimit)
@@ -106,7 +181,7 @@ namespace Boggle
                 ActivePlayer player1 = new ActivePlayer();
                 ActivePlayer player2 = new ActivePlayer();
                 BoggleBoard board = new BoggleBoard();
-
+                GameObject.Board = board.ToString();
                 player1.UserToken = players.p1_ID;
                 player2.UserToken = players.p2_ID;
                 player1.GameID = tempGameID.ToString();

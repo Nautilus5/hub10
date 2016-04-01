@@ -15,6 +15,33 @@ using Boggle;
 namespace DataModel
 {
     [DataContract]
+    public class PlayerBriefReport
+    {
+        [DataMember]
+        public int Score { get; set; }
+    }
+    [DataContract]
+    public class PlayerReport
+    {
+        [DataMember]
+        public string Nickname { get; set; }
+
+        [DataMember]
+        public int Score { get; set; }
+    }
+    [DataContract]
+    public class GCompletePlayerReport
+    {
+        [DataMember]
+        public string Nickname { get; set; }
+
+        [DataMember]
+        public int Score { get; set; }
+
+        [DataMember]
+        public List<String> WordsPlayed { get; set; }
+    }
+    [DataContract]
     public class ActivePlayer
     {
         [DataMember]
